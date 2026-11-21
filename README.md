@@ -1,30 +1,79 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover-dark.svg">
-  <img src="docs/assets/cover-light.svg" alt="rightsize: across effort levels the pass rate stays at 100% while cost climbs to 7.7 times high on Opus 5.5" width="100%">
-</picture>
+<div align="center">
 
-<p align="center">
-  <a href="https://github.com/Ayoubhm07/rightsize/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ayoubhm07/rightsize/actions/workflows/ci.yml/badge.svg"></a>
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg">
-  <img alt="Runtime dependencies: none" src="https://img.shields.io/badge/runtime%20dependencies-none-brightgreen.svg">
-</p>
+<img src="docs/assets/phantera-gift-banner.png" alt="rightsize, a gift from Phantera. Same quality. Fewer tokens." width="100%">
 
-<p align="center">
-  <a href="docs/getting-started.md"><b>Get started</b></a> ·
-  <a href="#measured-not-claimed"><b>Measurements</b></a> ·
-  <a href="docs/usage-guide.md"><b>Usage guide</b></a> ·
-  <a href="docs/faq.md"><b>FAQ</b></a>
-</p>
+<br/>
 
-A Claude Code plugin that gives every session an expert work strategy: the right
-playbook for the job, the right model (Haiku 5.5, Sonnet 5.5, Opus 5.5, Fable 5.1),
-the right effort (`low` to `max`), the right mode (inline, sub-agent, plan, separate
-session), and verification proportionate to the change. It escalates on evidence,
-never on habit.
+<a href="#install-in-one-line"><img src="https://img.shields.io/badge/Install-one%20line-00d4ff?style=for-the-badge&labelColor=0b0f14" alt="Install"></a>
+<a href="#measured-not-claimed"><img src="https://img.shields.io/badge/Up%20to-98%25%20cheaper-00d4ff?style=for-the-badge&labelColor=0b0f14" alt="Up to 98% cheaper"></a>
+<img src="https://img.shields.io/badge/price-free%20forever-ffffff?style=for-the-badge&labelColor=0b0f14" alt="Free forever">
+<img src="https://img.shields.io/badge/license-MIT-ffffff?style=for-the-badge&labelColor=0b0f14" alt="MIT">
+
+</div>
+
+<br/>
+
+> **A note from the Phantera team.**
+>
+> We build Phantera with Claude Code every day. The waste we kept seeing was always the same: the most expensive model, at the highest effort, for jobs a cheap one did just as well.
+>
+> So we wrote the rule down, measured it, and turned it into a Claude Code plugin.
+>
+> It's yours. No sign-up, no trial, no upsell.
+> **If it saves you a single dollar, pay us in stars.** ⭐
+
+<br/>
+
+## Install in one line
 
 ```text
-/plugin install rightsize --marketplace Ayoubhm07/rightsize
+/plugin install rightsize --marketplace phantera-ai/rightsize
 ```
+
+From then on, every Claude Code session picks the right playbook, the right model (Haiku 5.5, Sonnet 5.5, Opus 5.5, Fable 5.1), the right effort (`low` to `max`), the right mode, and verification proportionate to the change. It escalates on evidence, never on habit.
+
+<br/>
+
+## Rule 0: quality before optimisation
+
+The deliverable must reach the standard of the best expert in the field. Savings never come from weaker reasoning on it. They come from everything around it: lookups on cheap models, tests scoped to the change, no useless parallelism, a stable prompt cache.
+
+When two tiers both look possible for the deliverable, rightsize takes the stronger one.
+
+<br/>
+
+## Measured, not claimed
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/routing-savings-dark.svg">
+  <img src="docs/assets/routing-savings-light.svg" alt="Routed runs against Opus at high: minus 98, 96 and 73 percent, with 2 of 2 passes on both sides" width="100%">
+</picture>
+
+**Routing benchmark, 19 runs, against Opus at `high` for everything:**
+
+| Task | Baseline | rightsize | Cost | Pass |
+|---|---|---|---|---|
+| Find a value in a repo, with decoys | $0.118 | haiku/low $0.002 | **−98%** | 2/2 vs 2/2 |
+| Rename across files, add type hints | $0.104 | haiku/low $0.004 | **−96%** | 2/2 vs 2/2 |
+| Fix a parser against hidden tests | $0.130 | sonnet/medium $0.035 | **−73%** | 2/2 vs 2/2 |
+
+**Effort sweep, 100 valid headless runs.** Every valid run passed from `low` up, on Haiku, Sonnet and Opus 5.5. Haiku at `low` built a regex engine matching Python's `re` on all 3 000 random cases, 3 times out of 3, for **$0.02**.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/effort-cost-dark.svg">
+  <img src="docs/assets/effort-cost-light.svg" alt="Mean cost relative to high effort, from low to max; every run passed" width="100%">
+</picture>
+
+| Cost vs `high`, same model | low | medium | xhigh | max |
+|---|---|---|---|---|
+| Sonnet 5.5 | 0.4–0.6× | 0.5–0.8× | 1.4–1.9× | 5.0–8.1× |
+| Opus 5.5 | 0.6–1.1× | 0.9–1.0× | 1.5–2.2× | 3.7–9.3× (4–7× slower) |
+
+**Scoped testing:** 11.4 s for the full suite, 0.7 s scoped after a one-module change.
+
+What the numbers do not say: these tasks are well specified and verifiable, where low effort is safest. Nothing here measures open-ended work, and samples are small. Everything is reproducible with [`bench/`](docs/measuring.md).
+
+<br/>
 
 ## How it works
 
@@ -33,97 +82,36 @@ never on habit.
   <img src="docs/assets/how-it-works-light.svg" alt="Score the task, route it to a model, effort and mode, verify with the tests the change reaches, and escalate one rung on evidence" width="100%">
 </picture>
 
-## Rule 0: quality before optimisation
-
-The deliverable must reach the standard of the best expert in the field. Savings
-never come from weaker reasoning on it; they come from everything around it:
-lookups on cheap models, tests scoped to the change, no useless parallelism, a
-stable prompt cache. When two tiers both look possible for the deliverable,
-rightsize takes the stronger one.
-
-## Measured, not claimed
-
-**Effort sweep: 100 valid headless runs** (October 2026, Claude Code 2.1.308), 3 per
-cell, on four tasks graded by hidden tests or an oracle, up to a regex engine
-compared with Python's `re` on 3 000 random patterns.
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/effort-cost-dark.svg">
-  <img src="docs/assets/effort-cost-light.svg" alt="Mean cost relative to high effort: Sonnet 5.5 0.5, 0.6, 1, 1.7 and 7 times; Opus 5.5 0.8, 1, 1, 2.1 and 7.7 times, from low to max; every run passed" width="100%">
-</picture>
-
-- **Every valid run passed from `low` up**, on Haiku, Sonnet and Opus 5.5. Haiku at
-  `low` built a regex engine matching `re` on all 3 000 cases, 3 times out of 3, for $0.02.
-- Above `medium`, effort bought nothing measurable on these tasks:
-
-| Cost vs `high`, same model | low | medium | xhigh | max |
-|---|---|---|---|---|
-| Sonnet 5.5 | 0.4–0.6× | 0.5–0.8× | 1.4–1.9× | 5.0–8.1× |
-| Opus 5.5 | 0.6–1.1× | 0.9–1.0× | 1.5–2.2× | 3.7–9.3× (4–7× slower) |
-
-So rightsize lets a **check** (tests, an oracle, a compiler) carry the quality: a
-verified task starts one effort level lower and climbs on failure. Work no check can
-grade (design, review, open-ended tasks) keeps a high effort.
-
-**Routing benchmark: 19 runs.** Against Opus at `high` for everything:
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/routing-savings-dark.svg">
-  <img src="docs/assets/routing-savings-light.svg" alt="Routed runs against Opus at high: minus 98, 96 and 73 percent, with 2 of 2 passes on both sides" width="100%">
-</picture>
-
-| Task | Baseline | rightsize | Cost | Pass |
-|---|---|---|---|---|
-| Find a value in a repo, with decoys | $0.118 | haiku/low $0.002 | −98% | 2/2 vs 2/2 |
-| Rename across files, add type hints | $0.104 | haiku/low $0.004 | −96% | 2/2 vs 2/2 |
-| Fix a parser against hidden tests | $0.130 | sonnet/medium $0.035 | −73% | 2/2 vs 2/2 |
-
-**Scoped testing:** 11.4 s full suite against 0.7 s scoped after a one-module change.
-
-What the numbers do not say: these tasks are well specified and verifiable, where
-low effort is safest; nothing here measures open-ended work. Samples are small.
-Everything is reproducible with [`bench/`](docs/measuring.md).
-
-## What is inside
-
 | | |
 |---|---|
 | [`skills/rightsize/SKILL.md`](skills/rightsize/SKILL.md) | The strategy: rule 0, task scoring, routing table, modes, agent protocol, scoped verification, escalation, cache rules |
 | [`skills/rightsize/PLAYBOOKS.md`](skills/rightsize/PLAYBOOKS.md) | Expert sequences: bug, feature, refactor, research, review, migration, performance, docs, sprint close |
-| [`test_scope.py`](docs/scoped-testing.md) | Runs only the tests a change reaches; the full suite when that is the only safe answer; a ledger of full runs |
+| [`test_scope.py`](docs/scoped-testing.md) | Runs only the tests a change reaches, the full suite when that is the only safe answer |
 | [`token_audit.py`](docs/measuring.md) | Where your tokens and dollars go, from local transcripts |
 | [`agent_audit.py`](docs/agents-and-protocol.md) | Finds agents without `model` / `effort` and proposes values |
 | [`agents/`](docs/agents-and-protocol.md) | `rs-scout` (haiku/low), `rs-verifier` (haiku/low), `rs-builder` (sonnet/medium), `rs-sage` (opus/high) |
 | [`hooks/`](docs/architecture.md) | Rules in every session (~200 tokens, once) and in every sub-agent brief (~130 tokens) |
 
-## Guides
+Guides: [Getting started](docs/getting-started.md) · [Usage](docs/usage-guide.md) · [Effort and models](docs/effort-and-models.md) · [Scoped testing](docs/scoped-testing.md) · [Measuring](docs/measuring.md) · [Architecture](docs/architecture.md) · [FAQ](docs/faq.md)
 
-- [Getting started](docs/getting-started.md): install, check, uninstall
-- [Usage guide](docs/usage-guide.md): what happens on its own, how to steer it, the effort button
-- [Effort and models](docs/effort-and-models.md): what to use when, with the measurements
-- [Scoped testing](docs/scoped-testing.md)
-- [Agents and protocol](docs/agents-and-protocol.md)
-- [Measuring](docs/measuring.md): your own usage, and the benchmark
-- [Architecture](docs/architecture.md): layout and design decisions
-- [FAQ](docs/faq.md)
-- [Maintainer notes](docs/maintainers.md): repository security settings, going public, releasing
+Requirements: Claude Code 2.1.275 or later, Python 3.9+, git. No runtime dependencies.
 
-## Why not a prompt classifier in a hook
+<br/>
 
-No Claude Code hook can change the main session's model or effort, so a classifier
-in a prompt hook can only print advice, paid for on every prompt. rightsize acts
-where Claude Code really lets you act: the Agent call, agent files, plan mode, and
-the work strategy itself.
+## This is the first gift, not the last
 
-## Requirements
+Every tool we build to run Phantera better and that can help you too, we'll give back here.
 
-Claude Code 2.1.275 or later, Python 3.9+, git. No runtime dependencies.
+**Star this repo and watch [phantera-ai](https://github.com/phantera-ai)** to get the next one the day it ships.
 
-## Contributing and security
+<br/>
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Changes to the
-routing rules need measurements.
+<div align="center">
 
-## License
+<a href="https://github.com/phantera-ai/rightsize/stargazers"><img src="https://img.shields.io/badge/%E2%AD%90%20Pay%20us%20in%20stars-it's%20the%20only%20price-00d4ff?style=for-the-badge&labelColor=0b0f14" alt="Pay us in stars"></a>
 
-[MIT](LICENSE)
+<br/><br/>
+
+<sub>Made by the team behind <a href="https://www.phantera-tn.com/en"><b>Phantera</b></a>, B2B prospecting that knows when to stay quiet.<br/>Written by Ayoub Hammoudi · MIT · Contributions welcome, see <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></sub>
+
+</div>

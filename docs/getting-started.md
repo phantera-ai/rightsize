@@ -13,7 +13,7 @@
 In Claude Code:
 
 ```text
-/plugin install rightsize --marketplace Ayoubhm07/rightsize
+/plugin install rightsize --marketplace phantera-ai/rightsize
 ```
 
 This installs the skill, the four `rs-*` agents and the hooks that make the rules
@@ -33,7 +33,7 @@ SessionStart hook; if it is missing, see [FAQ](faq.md#the-rules-do-not-show-up).
 ## Manual install (without the plugin system)
 
 ```bash
-git clone https://github.com/Ayoubhm07/rightsize.git ~/rightsize
+git clone https://github.com/phantera-ai/rightsize.git ~/rightsize
 mkdir -p ~/.claude/skills ~/.claude/agents
 cp -r ~/rightsize/skills/rightsize ~/.claude/skills/
 cp ~/rightsize/agents/*.md ~/.claude/agents/
